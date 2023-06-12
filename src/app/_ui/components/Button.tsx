@@ -6,6 +6,7 @@ const button = cva(
     variants: {
       intent: {
         primary: ["bg-brand-bittersweet", "text-white"],
+        secondary: ["bg-brand-cerulean-blue", "text-white"],
       },
       size: {
         small: ["text-sm", "h-[52px]", "px-2"],

@@ -2,9 +2,9 @@ import { Tick, Close } from "@/ui/icons/index";
 
 interface OptionListProps {
   options: string[];
-  correctAnswer: string;
+  isCorrectAnswer: boolean;
   selectedAnswerIndex: number;
-  onAnswerSelected: (answer: string) => void;
+  onAnswerSelected: (answerIndex: number) => void;
 }
 
 const correctAnswerBadge = (
@@ -23,14 +23,10 @@ const wrongAnswerBadge = (
 
 export const OptionList = ({
   options,
-  correctAnswer,
   selectedAnswerIndex,
   onAnswerSelected,
+  isCorrectAnswer,
 }: OptionListProps) => {
-  const isCorrectAnswer = () => {
-    return options[selectedAnswerIndex] === correctAnswer;
-  };
-
   return (
     <div className="flex flex-col items-start gap-1">
       {options.map((option, idx) => (
@@ -41,7 +37,7 @@ export const OptionList = ({
             if (selectedAnswerIndex !== -1) {
               return;
             }
-            onAnswerSelected(option);
+            onAnswerSelected(idx);
           }}
         >
           <div
@@ -63,7 +59,7 @@ export const OptionList = ({
           <p className="text-brand-midnight font-normal text-base">{option}</p>
           {idx === selectedAnswerIndex && (
             <div className="ml-auto">
-              {isCorrectAnswer() ? correctAnswerBadge : wrongAnswerBadge}
+              {isCorrectAnswer ? correctAnswerBadge : wrongAnswerBadge}
             </div>
           )}
         </div>

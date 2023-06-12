@@ -23,6 +23,7 @@ module.exports = {
           "paris-green": "#56C490",
           "light-gray": "#F2F2F2",
           midnight: "#1B0330",
+          "mountain-mist": "#959595",
         },
       },
     },
