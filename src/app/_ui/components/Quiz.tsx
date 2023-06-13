@@ -8,7 +8,7 @@ import { OptionList } from "./OptionList";
 import { formatTime } from "../utils/formatTime";
 import { Result } from "./Result";
 
-const TIME_LIMIT = 6; // 60 seconds
+const TIME_LIMIT = 60; // 60 seconds
 
 export const Quiz = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -24,14 +24,22 @@ export const Quiz = () => {
     secondsUsed: 0,
   });
 
-  useEffect(() => {
-    if (quizFinished) return;
+  const setupTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
 
     timerRef.current = setInterval(() => {
       setTimePassed((prevTimePassed) =>
         prevTimePassed > TIME_LIMIT ? TIME_LIMIT : prevTimePassed + 1
       );
     }, 1000);
+  };
+
+  useEffect(() => {
+    if (quizFinished) return;
+
+    setupTimer();
 
     return () => {
       if (timerRef.current) {
@@ -57,6 +65,7 @@ export const Quiz = () => {
       }
 
       handleNextQuestion();
+      // Restart timer
       setTimePassed(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,10 +85,14 @@ export const Quiz = () => {
     setActiveQuestion((prev) => prev + 1);
 
     // Reset timer
+    setupTimer();
     setTimePassed(0);
   };
 
   const handleSelectAnswer = (answerIndex: number) => {
+    //  Stop timer
+    clearInterval(timerRef.current!);
+
     setSelectedAnswerIndex(answerIndex);
 
     // Check if answer is correct
