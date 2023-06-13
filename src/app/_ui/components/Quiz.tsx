@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { quizQuestions } from "@/ui/content/content";
 import { Button } from "@/ui/components/Button";
 import { OptionList } from "./OptionList";
 import { formatTime } from "../utils/formatTime";
-import useTimer from "../hooks/useTimer";
 import { Result } from "./Result";
 
-const TIME_LIMIT = 60; // 60 seconds
+const TIME_LIMIT = 6; // 60 seconds
 
 export const Quiz = () => {
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [timePassed, setTimePassed] = useState(0);
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
   const [quizFinished, setQuizFinished] = useState(false);
@@ -22,23 +24,60 @@ export const Quiz = () => {
     secondsUsed: 0,
   });
 
+  useEffect(() => {
+    if (quizFinished) return;
+
+    timerRef.current = setInterval(() => {
+      setTimePassed((prevTimePassed) =>
+        prevTimePassed > TIME_LIMIT ? TIME_LIMIT : prevTimePassed + 1
+      );
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [quizFinished]);
+
+  useEffect(() => {
+    if (quizFinished) return;
+
+    if (timePassed > TIME_LIMIT) {
+      // The time limit has been reached for this question
+      // So the answerr will be considered wrong
+
+      // Update results
+      if (selectedAnswerIndex === -1) {
+        setResults((prev) => ({
+          ...prev,
+          secondsUsed: prev.secondsUsed + timePassed,
+          wrongAnswers: prev.wrongAnswers + 1,
+        }));
+      }
+
+      handleNextQuestion();
+      setTimePassed(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timePassed]);
+
   const handleNextQuestion = () => {
-    if (activeQuestion === quizQuestions.length - 1) {
-      console.log("Quiz is over!");
+    // Reset selected answer
+    setSelectedAnswerIndex(-1);
+
+    // Check if quiz finished
+    if (activeQuestion + 1 >= quizQuestions.length) {
       setQuizFinished(true);
-      resetTimer();
       return;
     }
 
-    setSelectedAnswerIndex(-1);
+    // Set next question
     setActiveQuestion((prev) => prev + 1);
-    resetTimer();
-  };
 
-  const { timePassed, resetTimer, interruptTimer } = useTimer(
-    TIME_LIMIT,
-    handleNextQuestion
-  );
+    // Reset timer
+    setTimePassed(0);
+  };
 
   const handleSelectAnswer = (answerIndex: number) => {
     setSelectedAnswerIndex(answerIndex);
@@ -67,8 +106,6 @@ export const Quiz = () => {
       }));
       setIsCorrectAnswer(false);
     }
-
-    interruptTimer();
   };
 
   const { question, options } = quizQuestions[activeQuestion];
