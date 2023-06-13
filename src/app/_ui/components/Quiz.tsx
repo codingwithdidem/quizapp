@@ -59,7 +59,7 @@ export const Quiz = () => {
       if (selectedAnswerIndex === -1) {
         setResults((prev) => ({
           ...prev,
-          secondsUsed: prev.secondsUsed + timePassed,
+          secondsUsed: prev.secondsUsed + TIME_LIMIT,
           wrongAnswers: prev.wrongAnswers + 1,
         }));
       }
