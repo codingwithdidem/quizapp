@@ -22,8 +22,6 @@ export const Result = ({ results, totalQuestions }: ResultProps) => {
     window.location.reload();
   };
 
-  console.log("results", results);
-
   return (
     <motion.div
       key={"result"}
@@ -47,12 +45,12 @@ export const Result = ({ results, totalQuestions }: ResultProps) => {
         <h1 className="font-bold text-base text-white">QuizApp</h1>
 
         {/* Result Box */}
-        <div className="mt-6 flex-1 bg-brand-light-gray border border-brand-light-gray rounded-2xl flex flex-col items-center ">
+        <div className="mt-6 flex-1 bg-white border border-brand-light-gray rounded-2xl flex flex-col items-center ">
           <Lottie
             animationData={confettiAnimation}
             loop={false}
             autoplay={true}
-            style={{ width: "300px", height: "250px" }}
+            style={{ width: "170px", height: "170px" }}
           />
           <h3 className="text-brand-midnight text-[32px] font-medium leading-9 mt-4">
             Congratulations!
@@ -70,11 +68,41 @@ export const Result = ({ results, totalQuestions }: ResultProps) => {
           {/* Charts */}
           <div className="flex items-center mt-4 gap-4">
             <DonutChart
-              successColor={"#56C490"}
-              failureColor={"#FF6A66"}
+              className="w-36 h-36"
+              total={60 * totalQuestions}
+              used={secondsUsed}
+              type={"time"}
+              data={[
+                {
+                  label: "Time Used",
+                  value: secondsUsed,
+                  color: "#374CB7",
+                },
+                {
+                  label: "Time Left",
+                  value: 60 * totalQuestions - secondsUsed,
+                  color: "#F0F0F0",
+                },
+              ]}
+            />
+
+            <DonutChart
+              className="w-36 h-36"
+              type={"questions"}
               total={totalQuestions}
-              numOfCorrect={correctAnswers}
-              numOfWrong={wrongAnswers}
+              used={correctAnswers}
+              data={[
+                {
+                  label: "Correct",
+                  value: correctAnswers,
+                  color: "#56C490",
+                },
+                {
+                  label: "Wrong",
+                  value: wrongAnswers,
+                  color: "#FF6A66",
+                },
+              ]}
             />
           </div>
         </div>

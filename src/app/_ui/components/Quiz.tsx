@@ -171,7 +171,7 @@ export const Quiz = () => {
                 className="absolute top-0 left-0 h-full bg-brand-cerulean-blue rounded-full"
                 initial={{ width: "0%" }}
                 animate={{ width: `${(timePassed / TIME_LIMIT) * 100}%` }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 1 }}
               />
             </div>
             {/* End time */}
