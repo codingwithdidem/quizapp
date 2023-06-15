@@ -7,8 +7,13 @@ import { Button } from "@/ui/components/Button";
 import { OptionList } from "./OptionList";
 import { formatTime } from "../utils/formatTime";
 import { Result } from "./Result";
+import {
+  playCorrectAnswer,
+  playWrongAnswer,
+  playQuizEnd,
+} from "../utils/playSound";
 
-const TIME_LIMIT = 60; // 60 seconds
+const TIME_LIMIT = 60; // 1 minute per question
 
 export const Quiz = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -77,6 +82,8 @@ export const Quiz = () => {
 
     // Check if quiz finished
     if (activeQuestion + 1 >= quizQuestions.length) {
+      console.log("Quiz finished!");
+      playQuizEnd();
       setQuizFinished(true);
       return;
     }
@@ -92,7 +99,6 @@ export const Quiz = () => {
   const handleSelectAnswer = (answerIndex: number) => {
     //  Stop timer
     clearInterval(timerRef.current!);
-
     setSelectedAnswerIndex(answerIndex);
 
     // Check if answer is correct
@@ -101,6 +107,7 @@ export const Quiz = () => {
 
     if (correctAnswer === selectedAnswer) {
       console.log("Correct answer!");
+      playCorrectAnswer();
       // Update results
       setResults((prev) => ({
         ...prev,
@@ -111,6 +118,7 @@ export const Quiz = () => {
       setIsCorrectAnswer(true);
     } else {
       console.log("Wrong answer!");
+      playWrongAnswer();
       // Update results
       setResults((prev) => ({
         ...prev,

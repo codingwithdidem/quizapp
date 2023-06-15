@@ -45,7 +45,7 @@ export const Result = ({ results, totalQuestions }: ResultProps) => {
         <h1 className="font-bold text-base text-white">QuizApp</h1>
 
         {/* Result Box */}
-        <div className="mt-6 flex-1 bg-white border border-brand-light-gray rounded-2xl flex flex-col items-center ">
+        <div className="mt-6 flex-1 bg-white border border-brand-light-gray rounded-2xl flex flex-col items-center py-7 px-2 ">
           <Lottie
             animationData={confettiAnimation}
             loop={false}
@@ -66,7 +66,7 @@ export const Result = ({ results, totalQuestions }: ResultProps) => {
           </p>
 
           {/* Charts */}
-          <div className="flex items-center mt-4 gap-4">
+          <div className="flex items-center mt-4 space-x-4">
             <DonutChart
               className="w-36 h-36"
               total={60 * totalQuestions}
