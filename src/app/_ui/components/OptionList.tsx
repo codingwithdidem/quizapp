@@ -71,7 +71,11 @@ export const OptionList = ({
       {options.map((option, idx) => (
         <div
           key={idx}
-          className="relative font-jakarta flex items-center space-x-2 rounded-xl border border-brand-light-gray px-6 py-4 w-full cursor-pointer select-none"
+          className={`relative font-jakarta flex items-center space-x-2 rounded-xl border px-6 py-4 w-full cursor-pointer select-none ${
+            idx === selectedAnswerIndex
+              ? "border-brand-cerulean-blue"
+              : "border-brand-light-gray"
+          }`}
           onClick={() => {
             if (selectedAnswerIndex !== -1) {
               return;
