@@ -1,10 +1,10 @@
 import { Tick, Close } from "@/ui/icons/index";
-
 interface OptionListProps {
   options: string[];
   isCorrectAnswer: boolean;
   selectedAnswerIndex: number;
   onAnswerSelected: (answerIndex: number) => void;
+  activeQuestion: any;
 }
 
 const correctAnswerBadge = (
@@ -26,7 +26,46 @@ export const OptionList = ({
   selectedAnswerIndex,
   onAnswerSelected,
   isCorrectAnswer,
+  activeQuestion,
 }: OptionListProps) => {
+  const correctAnswerIndex = options.findIndex(
+    (option) => option === activeQuestion.correctAnswer
+  );
+
+  console.log({
+    correctAnswerIndex,
+    activeQuestion,
+    options,
+  });
+
+  const renderSelectedOptionBadge = (idx: number) => {
+    if (selectedAnswerIndex === -1) {
+      return null;
+    }
+
+    if (selectedAnswerIndex === idx) {
+      return (
+        <div className="absolute top-[50%] -translate-y-1/2 right-2 z-10">
+          {isCorrectAnswer ? correctAnswerBadge : wrongAnswerBadge}
+        </div>
+      );
+    }
+  };
+
+  const renderCorrectBadge = (idx: number) => {
+    if (selectedAnswerIndex === -1) {
+      return null;
+    }
+
+    if (correctAnswerIndex === idx) {
+      return (
+        <div className="absolute top-[50%] -translate-y-1/2 right-2 z-10">
+          {correctAnswerBadge}
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col items-start space-y-1">
       {options.map((option, idx) => (
@@ -57,11 +96,8 @@ export const OptionList = ({
             />
           </div>
           <p className="text-brand-midnight font-normal text-base">{option}</p>
-          {idx === selectedAnswerIndex && (
-            <div className="absolute top-[50%] -translate-y-1/2 right-2 z-10">
-              {isCorrectAnswer ? correctAnswerBadge : wrongAnswerBadge}
-            </div>
-          )}
+          {renderSelectedOptionBadge(idx)}
+          {renderCorrectBadge(idx)}
         </div>
       ))}
     </div>

@@ -1,6 +1,6 @@
 export const importantToKnow = [
   "In each quiz, you  are required to answer 5 questions.",
-  "You will have 3 minutes for each question. If you fail to complete a question in given time, your answer will be considered incorrect.",
+  "You will have 1 minutes for each question. If you fail to complete a question in given time, your answer will be considered incorrect.",
 ];
 
 export const quizQuestions = [

@@ -194,6 +194,7 @@ export const Quiz = () => {
         </div>
 
         <OptionList
+          activeQuestion={quizQuestions[activeQuestion]}
           options={options}
           selectedAnswerIndex={selectedAnswerIndex}
           onAnswerSelected={handleSelectAnswer}

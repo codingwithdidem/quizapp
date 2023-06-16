@@ -10,7 +10,7 @@ export default function Home() {
   const [displayView, setDisplayView] = useState("intro");
 
   return (
-    <main className="min-h-screen flex flex-col w-full overflow-hidden">
+    <main className="h-viewport flex flex-col w-full overflow-hidden">
       <AnimatePresence mode="wait">
         {
           {
